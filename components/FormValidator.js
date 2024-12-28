@@ -1,14 +1,52 @@
 class FormValidator {
-  constructor(settings, formEl) {
-    this._inputSelector = settings.inputSelector;
-    this._submitButtonSelector = settings.submitButtonSelector;
-    this._errorClass = settings.errorClass;
-    this._inputErrorClass = settings.inputErrorClass;
-    this._inactiveButtonClass = settings.inactiveButtonClass;
+  constructor(settings = {}, formEl) {
+    const {
+      inputSelector = ".form__input",
+      submitButtonSelector = ".form__submit",
+      errorClass = "form__input-error_active",
+      inputErrorClass = "form__input_type_error",
+      inactiveButtonClass = "form__submit_inactive",
+    } = settings;
+
+    if (!formEl) {
+      throw new Error("Form element is required.");
+    }
+
+    this._inputSelector = inputSelector;
+    this._submitButtonSelector = submitButtonSelector;
+    this._errorClass = errorClass;
+    this._inputErrorClass = inputErrorClass;
+    this._inactiveButtonClass = inactiveButtonClass;
     this._formEl = formEl;
   }
 
+  _showInputError(inputElement, errorMessage) {
+    const errorElement = this._formEl.querySelector(`#${inputElement.id}-error`);
+    if (!errorElement) {
+      console.error(`Error element not found for input with ID: ${inputElement.id}`);
+      return;
+    }
+    inputElement.classList.add(this._inputErrorClass);
+    errorElement.textContent = errorMessage;
+    errorElement.classList.add(this._errorClass);
+  }
+
+  _hideInputError(inputElement) {
+    const errorElement = this._formEl.querySelector(`#${inputElement.id}-error`);
+    // if (!errorElement) {
+    //   console.error(`Error element not found for input with ID: ${inputElement.id}`);
+    //   return;
+    // }
+    inputElement.classList.remove(this._inputErrorClass);
+    errorElement.textContent = "";
+    errorElement.classList.remove(this._errorClass);
+  }
+
   _checkInputValidity(inputElement) {
+    // if (!inputElement.id) {
+    //   console.warn("Input element does not have an ID. Validation skipped.");
+    //   return;
+    // }
     if (!inputElement.validity.valid) {
       this._showInputError(inputElement, inputElement.validationMessage);
     } else {
@@ -17,6 +55,11 @@ class FormValidator {
   }
 
   _toggleButtonState(inputList, buttonElement) {
+    if (!inputList || !buttonElement) {
+      console.warn("Input list or button element is missing.");
+      return;
+    }
+
     const hasInvalidInput = inputList.some(
       (inputElement) => !inputElement.validity.valid
     );
@@ -37,6 +80,14 @@ class FormValidator {
     const buttonElement = this._formEl.querySelector(
       this._submitButtonSelector
     );
+
+    if (!this._inputList.length) {
+      console.warn("No inputs found in the form.");
+    }
+
+    if (!buttonElement) {
+      console.warn("Submit button not found in the form.");
+    }
 
     this._toggleButtonState(this._inputList, buttonElement);
 
