@@ -1,17 +1,26 @@
 # Simple Todo App
 
-Give a brief description of the project here. Feel free to give it a different name.
+Todo App is a simple web application designed to help users organize their daily tasks efficiently. It features an intuitive interface for creating, updating, and tracking task completion statuses.
 
 ## Functionality
 
-Give a more detailed explanation of the project and its functionality.
+- Validates form inputs in real-time.
+- Displays custom error messages for invalid inputs.
+- Toggles the state of the submit button based on form validity.
+- Supports custom configurations for error styling and selectors.
+- Ensures a consistent and user-friendly form validation experience.
+
 
 ## Technology
 
-Give a description of the technologies and techniques used. Pictures, GIFs, or screenshots that detail the project features are recommended.
+- Vanilla JavaScript
+- HTML
+- CSS
+- Modules
+- OOP
 
 ## Deployment
 
 This project is deployed on GitHub Pages:
 
-- ADD LINK HERE
+- [ToDo App Page](https://juliaoldman0.github.io/se_project_todo-app/)
