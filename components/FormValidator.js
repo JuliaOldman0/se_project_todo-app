@@ -33,20 +33,16 @@ class FormValidator {
 
   _hideInputError(inputElement) {
     const errorElement = this._formEl.querySelector(`#${inputElement.id}-error`);
-    // if (!errorElement) {
-    //   console.error(`Error element not found for input with ID: ${inputElement.id}`);
-    //   return;
-    // }
+    if (!errorElement) {
+      console.error(`Error element not found for input with ID: ${inputElement.id}`);
+      return;
+    }
     inputElement.classList.remove(this._inputErrorClass);
     errorElement.textContent = "";
     errorElement.classList.remove(this._errorClass);
   }
 
   _checkInputValidity(inputElement) {
-    // if (!inputElement.id) {
-    //   console.warn("Input element does not have an ID. Validation skipped.");
-    //   return;
-    // }
     if (!inputElement.validity.valid) {
       this._showInputError(inputElement, inputElement.validationMessage);
     } else {
@@ -97,6 +93,22 @@ class FormValidator {
         this._toggleButtonState(this._inputList, buttonElement);
       });
     });
+  }
+
+  resetValidation() {
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement);
+      inputElement.value = "";
+    });
+
+    const buttonElement = this._formEl.querySelector(
+      this._submitButtonSelector
+    );
+
+    if (buttonElement) {
+      buttonElement.classList.add(this._inactiveButtonClass);
+      buttonElement.disabled = true;
+    }
   }
 
   enableValidation() {
