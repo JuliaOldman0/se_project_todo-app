@@ -18,25 +18,27 @@ class FormValidator {
     this._inputErrorClass = inputErrorClass;
     this._inactiveButtonClass = inactiveButtonClass;
     this._formEl = formEl;
+    this._submitButton = this._formEl.querySelector(submitButtonSelector);
+    this._inputList = Array.from(this._formEl.querySelectorAll(inputSelector));
+  }
+
+  _getErrorElement(inputElement) {
+    return this._formEl.querySelector(`#${inputElement.id}-error`);
   }
 
   _showInputError(inputElement, errorMessage) {
-    const errorElement = this._formEl.querySelector(`#${inputElement.id}-error`);
-    if (!errorElement) {
-      console.error(`Error element not found for input with ID: ${inputElement.id}`);
-      return;
-    }
+    const errorElement = this._getErrorElement(inputElement);
+    if (!errorElement) return;
+
     inputElement.classList.add(this._inputErrorClass);
     errorElement.textContent = errorMessage;
     errorElement.classList.add(this._errorClass);
   }
 
   _hideInputError(inputElement) {
-    const errorElement = this._formEl.querySelector(`#${inputElement.id}-error`);
-    if (!errorElement) {
-      console.error(`Error element not found for input with ID: ${inputElement.id}`);
-      return;
-    }
+    const errorElement = this._getErrorElement(inputElement);
+    if (!errorElement) return;
+
     inputElement.classList.remove(this._inputErrorClass);
     errorElement.textContent = "";
     errorElement.classList.remove(this._errorClass);
@@ -50,71 +52,40 @@ class FormValidator {
     }
   }
 
-  _toggleButtonState(inputList, buttonElement) {
-    if (!inputList || !buttonElement) {
-      console.warn("Input list or button element is missing.");
-      return;
-    }
-
-    const hasInvalidInput = inputList.some(
+  _toggleButtonState() {
+    const hasInvalidInput = this._inputList.some(
       (inputElement) => !inputElement.validity.valid
     );
 
     if (hasInvalidInput) {
-      buttonElement.classList.add(this._inactiveButtonClass);
-      buttonElement.disabled = true;
+      this._submitButton.classList.add(this._inactiveButtonClass);
+      this._submitButton.disabled = true;
     } else {
-      buttonElement.classList.remove(this._inactiveButtonClass);
-      buttonElement.disabled = false;
+      this._submitButton.classList.remove(this._inactiveButtonClass);
+      this._submitButton.disabled = false;
     }
   }
 
   _setEventListeners() {
-    this._inputList = Array.from(
-      this._formEl.querySelectorAll(this._inputSelector)
-    );
-    const buttonElement = this._formEl.querySelector(
-      this._submitButtonSelector
-    );
-
-    if (!this._inputList.length) {
-      console.warn("No inputs found in the form.");
-    }
-
-    if (!buttonElement) {
-      console.warn("Submit button not found in the form.");
-    }
-
-    this._toggleButtonState(this._inputList, buttonElement);
-
+    this._toggleButtonState();
     this._inputList.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
         this._checkInputValidity(inputElement);
-        this._toggleButtonState(this._inputList, buttonElement);
+        this._toggleButtonState();
       });
     });
   }
 
   resetValidation() {
-    this._inputList.forEach((inputElement) => {
-      this._hideInputError(inputElement);
-      inputElement.value = "";
-    });
-
-    const buttonElement = this._formEl.querySelector(
-      this._submitButtonSelector
+    this._formEl.reset();
+    this._inputList.forEach((inputElement) =>
+      this._hideInputError(inputElement)
     );
-
-    if (buttonElement) {
-      buttonElement.classList.add(this._inactiveButtonClass);
-      buttonElement.disabled = true;
-    }
+    this._toggleButtonState();
   }
 
   enableValidation() {
-    this._formEl.addEventListener("submit", (evt) => {
-      evt.preventDefault();
-    });
+    this._formEl.addEventListener("submit", (evt) => evt.preventDefault());
     this._setEventListeners();
   }
 }
