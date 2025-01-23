@@ -35,9 +35,9 @@ const section = new Section(
 
 section.renderItems();
 
-const openModal = (modal) => {
-  modal.classList.add("popup_visible");
-};
+// const openModal = (modal) => {
+//   modal.classList.add("popup_visible");
+// };
 
 const closeModal = (modal) => {
   modal.classList.remove("popup_visible");
@@ -49,7 +49,8 @@ const renderTodo = (item) => {
 };
 
 addTodoButton.addEventListener("click", () => {
-  openModal(addTodoPopupEl);
+  // openModal(addTodoPopupEl);
+  addTodoPopup.open();
 });
 
 addTodoCloseBtn.addEventListener("click", () => {

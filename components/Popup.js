@@ -1,10 +1,13 @@
 class Popup {
   constructor({ popupSelect }) {
-    this.popupElement = document.querySelector(popupSelect);
-    console.log(this.popupElement);
+    this._popupElement = document.querySelector(popupSelect);
+    
   }
 
-  
+  open() {
+    this._popupElement.classList.add("popup_visible");
+  }
+
 }
 
 export default Popup;
