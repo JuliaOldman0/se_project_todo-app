@@ -15,6 +15,18 @@ const todosList = document.querySelector(".todos__list");
 
 const todoCounter = new TodoCounter( initialTodos, ".counter__text");
 
+// const openModal = (modal) => {
+// modal.classList.add("popup_visible");
+//};
+
+// const closeModal = (modal) => {
+//   modal.classList.remove("popup.__visible");
+// }
+
+function handleCheck(completed) {
+  todoCounter.updateCompleted(completed);
+} 
+
 const addTodoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
   handleFormSubmit: (inputValues) => {
@@ -40,8 +52,9 @@ const addTodoPopup = new PopupWithForm({
 addTodoPopup.setEventListeners();
 
 const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template");
-  return todo.getView();
+  const todo = new Todo(data, "#todo-template", handleCheck);
+  // const todoElement = todo.getView();
+  return todo.getView(); // return todoElement;
 };
 
 const section = new Section(

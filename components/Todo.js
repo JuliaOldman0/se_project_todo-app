@@ -1,7 +1,13 @@
 class Todo {
-  constructor(data, selector) {
-    this._data = data;
+  constructor(data, selector, handleCheck) {
+// this._completed = data.completed;
+// this._name = data.name;
+// this._date = data.date;
+// this._id = data.id;
+// this._selector = selector;
+    this._data = data; 
     this._templateElement = document.querySelector(selector);
+    this._handleCheck = handleCheck;
 
     if (!this._templateElement) {
       throw new Error(`Template element with selector "${selector}" not found.`);
@@ -9,6 +15,21 @@ class Todo {
   }
 
   _setEventListeners() {
+    // this._deleteBtnEl.addEventListener("click", handleDelete);
+    // this._checkboxEl.addEventListener("change", this._handleCheck);
+    // }
+
+    // _getTemplate() {
+    //return document.querySelector(this._selector)
+    //.content.querySelector(".todo")
+    // .cloneNode(true);
+   // }
+
+   // _generateNameEl() {
+   // this._nameEl = this._element.querySelector(".todo__name");
+   // this._nameEl.textContent = this._name;
+   // }
+
     this._toggleCompletion = () => {
       this._data.completed = !this._data.completed;
     };
@@ -19,16 +40,6 @@ class Todo {
     });
 
     this._todoCheckboxEl.addEventListener("change", this._toggleCompletion);
-  }
-
-  _generateCheckboxEl() {
-    this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
-    this._todoLabel = this._todoElement.querySelector(".todo__label");
-    this._todoDate = this._todoElement.querySelector(".todo__date");
-    this._todoCheckboxEl.checked = Boolean(this._data.completed);
-    this._todoCheckboxEl.id = `todo-${this._data.id || "unknown"}`;
-    this._todoLabel.setAttribute("for", `todo-${this._data.id || "unknown"}`);
-    this._todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
   }
 
   _generateDate() {
@@ -49,6 +60,16 @@ class Todo {
     } else {
       console.warn("No date provided in data.");
     }
+  }
+
+  _generateCheckboxEl() {
+    this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
+    this._todoLabel = this._todoElement.querySelector(".todo__label");
+    this._todoDate = this._todoElement.querySelector(".todo__date");
+    this._todoCheckboxEl.checked = Boolean(this._data.completed);
+    this._todoCheckboxEl.id = `todo-${this._data.id || "unknown"}`;
+    this._todoLabel.setAttribute("for", `todo-${this._data.id || "unknown"}`);
+    this._todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
   }
 
   getView() {
