@@ -6,7 +6,7 @@ class Popup {
 
   _handleEscapeClose(evt) {
     if (evt.key === "Escape") {
-// TODO - call the close method
+      // TODO - call the close method
     }
   }
 
@@ -22,8 +22,15 @@ class Popup {
   }
 
   setEventListeners() {
-    this._popupCloseBtn.addEventListener("click", () => {
-      this.close();
+    // this._popupCloseBtn.addEventListener("click", () => {
+    //   this.close();
+    // });
+
+    this._popupElement.addEventListener("mousedown", (evt) => {
+      if (evt.target.popup__close || evt.target.popup) this.close();
+
+      // TODO/ check on top - if the event target's classList contains "popup__close" or "popup"
+      // then close the modal
     });
   }
 }

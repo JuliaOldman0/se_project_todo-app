@@ -49,12 +49,13 @@ const renderTodo = (item) => {
   todosList.append(todo);
 };
 
-function handleEscapeClose (evt) {
-if (evt.key === "Escape") {
-  //find the currently opened modal
-  // and close it
-}
-}
+// function handleEscapeClose (evt) {
+// if (evt.key === "Escape") {
+//   //find the currently opened modal
+
+//   // and close it
+// }
+// }
 
 addTodoButton.addEventListener("click", () => {
   // openModal(addTodoPopupEl);
