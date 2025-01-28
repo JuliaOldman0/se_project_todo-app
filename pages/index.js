@@ -10,7 +10,6 @@ import TodoCounter from "../components/TodoCounter.js";
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopupEl = document.querySelector("#add-todo-popup");
 const addTodoForm = addTodoPopupEl.querySelector(".popup__form");
-const todosList = document.querySelector(".todos__list");
 
 const todoCounter = new TodoCounter(initialTodos, ".counter__text");
 
@@ -20,17 +19,22 @@ function handleCheck(completed) {
 
 function handleDelete(data) {
   if (data.completed) {
-    todoCounter.updateCompleted(false); 
+    todoCounter.updateCompleted(false);
   }
-  todoCounter.updateTotal(false); 
+  todoCounter.updateTotal(false);
 }
 
 function handleCounterUpdate(data, isIncrement) {
   if (data.completed) {
-    todoCounter.updateCompleted(isIncrement); 
+    todoCounter.updateCompleted(isIncrement);
   }
   todoCounter.updateTotal(isIncrement);
 }
+
+const renderTodo = (item) => {
+  const todo = generateTodo(item);
+  section.addItem(todo);
+};
 
 const addTodoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
@@ -44,12 +48,11 @@ const addTodoPopup = new PopupWithForm({
     const id = uuidv4();
     const values = { name, date, id, completed: false };
 
-    handleCounterUpdate(values, true); // Increment counters for the new todo
+    handleCounterUpdate(values, true);
 
-    section.addItem(generateTodo(values));
+    renderTodo(values);
 
     addTodoPopup.close();
-
     newTodoValidator.resetValidation();
   },
 });
@@ -57,17 +60,13 @@ const addTodoPopup = new PopupWithForm({
 addTodoPopup.setEventListeners();
 
 const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template", handleCheck, handleDelete);
-  return todo.getView();
+  return new Todo(data, "#todo-template", handleCheck, handleDelete).getView();
 };
 
 const section = new Section(
   {
     items: initialTodos,
-    renderer: (item) => {
-      const todo = generateTodo(item);
-      section.addItem(todo);
-    },
+    renderer: renderTodo,
   },
   ".todos__list"
 );
